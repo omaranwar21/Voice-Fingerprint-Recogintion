@@ -1,6 +1,6 @@
 #####################################-----------     Packages Used     -----------######################################
-from flask import Flask, request        # Flask I 
-from flask_cors import CORS             # Activate Flask APIs 
+from flask import Flask, request, send_from_directory     # Flask I
+from flask_cors import CORS             # Activate Flask APIs
 import os.path                          # To treat with files path (save Files)
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -10,10 +10,9 @@ app = Flask(__name__)
 
 app.config['AUDIO_FOLDER'] = AUDIO_FOLDER
 
-CORS(app) 
+CORS(app)
 
-ALLOWED_EXTENSIONS = {'wav', 'mp3'}   # Extension Allowed 
-
+ALLOWED_EXTENSIONS = {'wav', 'mp3'}   # Extension Allowed
 
 
 #----------------------------------------------------------------------------------------------------------------------#
@@ -27,9 +26,8 @@ def allowed_file(filename):
 #----------------------------------------------------------------------------------------------------------------------#
 
 
-
 #----------------------------------------------------------------------------------------------------------------------#
-#Route handels the file recorded
+# Route handels the file recorded
 #       Methods: the client Posts the recorded file
 #       Functions: upload_file:
 #       No Arguments
@@ -39,7 +37,7 @@ def allowed_file(filename):
 #                       --> not allowed formats
 #             otherwise:
 #                       save file in AUDIO_FOLDER
-#       Return:  json script has file url       
+#       Return:  json script has file url
 @app.route("/api/upload", methods=['POST'])
 def upload_file():
     if "file" not in request.files:
@@ -56,8 +54,15 @@ def upload_file():
 #----------------------------------------------------------------------------------------------------------------------#
 
 
+# get audio file APIs
+@app.route('/api/file/<file_name>', methods=['GET'])
+def file(file_name):
+    if request.method == 'GET':
+        return send_from_directory(directory=app.config['AUDIO_FOLDER'], path=file_name), 200
+
 
 #----------------------------------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
-    app.run(debug=True)  #debug = true --> if the app has any error they will pop up on the web page 
+    # debug = true --> if the app has any error they will pop up on the web page
+    app.run(debug=True)
 #----------------------------------------------------------------------------------------------------------------------#
