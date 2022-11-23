@@ -50,7 +50,7 @@ def upload_file():
 
     signalPath = os.path.join(AUDIO_FOLDER, file.filename)
     file.save(signalPath)
-    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename}, 200
+    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "message": file.filename}, 200
 #----------------------------------------------------------------------------------------------------------------------#
 
 

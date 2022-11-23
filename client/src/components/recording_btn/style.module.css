@@ -1,0 +1,32 @@
+.record{
+    width: 12rem;
+    height: 12rem;
+    border: 0.1rem solid red;
+    border-radius: 15rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.record:hover{
+    border: 0.2rem solid darkslategrey;
+    color: red;
+}
+
+.container{
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stop{
+    background-color: red;
+    color: white;
+    width: 12rem;
+    height: 12rem;
+    border: 0.1rem solid red;
+    border-radius: 15rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
+

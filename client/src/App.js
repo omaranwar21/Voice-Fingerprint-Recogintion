@@ -1,9 +1,9 @@
-import Body from "./components/body";
+import RecordingButton from "./components/recording_btn";
 
 function App() {
   return (
     <div className="App">
-      <Body />
+      <RecordingButton />
     </div>
   );
 }
