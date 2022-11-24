@@ -4,20 +4,25 @@ from flask_cors import CORS             # Activate Flask APIs
 import os.path                          # To treat with files path (save Files)
 import pickle
 import librosa
-import numpy
+import numpy as np
+from pydub import AudioSegment
+import soundfile
+
 
 #----------------------------------------------------------------------------------------------------------------------#
-
 model = pickle.load(open("../processing/SVM_Model.pkl", "rb"))
 
 
 def features_extractor(file):
-    audio, sampleRate = librosa.load(file, res_type='kaiser_fast') 
+    mp3FilePath = "./files/"+file
+    wavfilePath = "./files/"+file.split('.')[0]+".wav"
+    sound = AudioSegment.from_mp3(mp3FilePath)
+    sound.export(wavfilePath, format="wav")
+    audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
     mfccsFeatures = librosa.feature.mfcc(y=audio, sr=sampleRate, n_mfcc=40)
-    mfccsScaledFeatures = np.mean(mfccsFeatures.T,axis=0)
-    
-    return mfccsScaledFeatures
+    mfccsScaledFeatures = np.mean(mfccsFeatures.T, axis=0)
 
+    return mfccsScaledFeatures
 
 
 AUDIO_FOLDER = '.\\files'  # Path to save the fils got from the client
@@ -68,14 +73,13 @@ def upload_file():
 
     file.save(signalPath)
 
-    features = features_extractor(file)
+    features = features_extractor(file.filename)
 
-    # features = features.reshape(1, -1)
+    features = features.reshape(1, -1)
 
-    # prediction = model.predict(features)
-    prediction = 0
+    prediction = model.predict(features)
 
-    result = " "
+    result = "0000"
     if prediction == 0:
         result = 'anwar'
     elif prediction == 1:
@@ -84,7 +88,6 @@ def upload_file():
         result = 'Ehab'
     elif prediction == 3:
         result = 'Zeyad'
-
 
     return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "message": result, "result": result}, 200
 #----------------------------------------------------------------------------------------------------------------------#

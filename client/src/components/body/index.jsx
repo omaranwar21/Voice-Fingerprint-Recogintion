@@ -1,11 +1,17 @@
-import RecordingButton from "../recording_btn";
+import { useReactMediaRecorder } from "react-media-recorder";
 
-function Body() {
+const RecordView = () => {
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useReactMediaRecorder({ video: false, audio: true, type: "audio/wav" });
+
   return (
     <div>
-      <RecordingButton />
+      <button onClick={startRecording}>Start Recording</button>
+      <button onClick={stopRecording}>Stop Recording</button>
+      <p>{mediaBlobUrl}</p>
+      <audio src={mediaBlobUrl} controls autoPlay />
     </div>
   );
-}
+};
 
-export default Body;
+export default RecordView;
