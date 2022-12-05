@@ -9,22 +9,6 @@ from pydub import AudioSegment
 import soundfile
 
 
-#----------------------------------------------------------------------------------------------------------------------#
-model = pickle.load(open("../processing/SVM_Model.pkl", "rb"))
-
-
-def features_extractor(file):
-    mp3FilePath = "./files/"+file
-    wavfilePath = "./files/"+file.split('.')[0]+".wav"
-    sound = AudioSegment.from_mp3(mp3FilePath)
-    sound.export(wavfilePath, format="wav")
-    audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
-    mfccsFeatures = librosa.feature.mfcc(y=audio, sr=sampleRate, n_mfcc=40)
-    mfccsScaledFeatures = np.mean(mfccsFeatures.T, axis=0)
-
-    return mfccsScaledFeatures
-
-
 AUDIO_FOLDER = '.\\files'  # Path to save the fils got from the client
 
 app = Flask(__name__)
@@ -34,6 +18,64 @@ app.config['AUDIO_FOLDER'] = AUDIO_FOLDER
 CORS(app)
 
 ALLOWED_EXTENSIONS = {'wav', 'mp3'}   # Extension Allowed
+
+
+#------------------------------------------------- extracting features -------------------------------------------------#
+model = pickle.load(open("../processing/model.pkl", "rb"))
+
+
+def mfcc_feature_extractor(audio, sampleRate):
+    mfccsFeatures = librosa.feature.mfcc(y=audio, sr=sampleRate, n_mfcc=40)
+    mfccsScaledFeatures = np.mean(mfccsFeatures.T, axis=0)
+
+    return mfccsScaledFeatures
+
+
+def contrast_feature_extractor(audio, sampleRate):
+    stft = np.abs(librosa.stft(audio))
+    contrast = librosa.feature.spectral_contrast(S=stft, sr=sampleRate)
+    contrastScaled = np.mean(contrast.T, axis=0)
+
+    return contrastScaled
+
+
+def tonnetz_feature_extractor(audio, sampleRate):
+    tonnetz = librosa.feature.tonnetz(
+        y=librosa.effects.harmonic(audio), sr=sampleRate)
+    tonnetzScaled = np.mean(tonnetz.T, axis=0)
+
+    return tonnetzScaled
+
+
+def centroid_feature_extractor(audio, sampleRate):
+    centroid = librosa.feature.spectral_centroid(y=audio, sr=sampleRate)
+    centroidScaled = np.mean(centroid.T, axis=0)
+
+    return centroidScaled
+
+
+def features_extractor(file):
+    wavfilePath = convert_to_wav(file)
+    features = []
+    audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
+    mfcc = mfcc_feature_extractor(audio, sampleRate)
+    contrast = contrast_feature_extractor(audio, sampleRate)
+    tonnetz = tonnetz_feature_extractor(audio, sampleRate)
+    centroid = centroid_feature_extractor(audio, sampleRate)
+    features.append([mfcc, contrast, tonnetz, centroid])
+    features[0] = np.concatenate(
+        (features[0][0], features[0][1], features[0][2], features[0][3]))
+    return features
+
+#------------------------------------------------- convert mp3 to wav -------------------------------------------------#
+
+
+def convert_to_wav(file):
+    mp3FilePath = "./files/"+file
+    wavfilePath = "./files/"+file.split('.')[0]+".wav"
+    sound = AudioSegment.from_mp3(mp3FilePath)
+    sound.export(wavfilePath, format="wav")
+    return wavfilePath
 
 
 #----------------------------------------------------------------------------------------------------------------------#
@@ -75,9 +117,8 @@ def upload_file():
 
     features = features_extractor(file.filename)
 
-    features = features.reshape(1, -1)
-
     prediction = model.predict(features)
+    print(prediction)
 
     result = "0000"
     if prediction == 0:
