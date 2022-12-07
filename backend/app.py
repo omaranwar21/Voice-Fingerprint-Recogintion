@@ -6,12 +6,11 @@ import pickle
 import librosa
 import numpy as np
 from pydub import AudioSegment
-import soundfile
 
-
-AUDIO_FOLDER = '.\\files'  # Path to save the fils got from the client
 
 app = Flask(__name__)
+
+AUDIO_FOLDER = '.\\files'  # Path to save the fils got from the client
 
 app.config['AUDIO_FOLDER'] = AUDIO_FOLDER
 
