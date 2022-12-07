@@ -55,8 +55,8 @@ function RecordingButton() {
         formData.append("fileTest", "");
 
         axios.post("/upload", formData).then((res) => {
-          const player = new Audio(res.data.file_url);
-          player.play();
+          // const player = new Audio(res.data.file_url);
+          // player.play();
           setMsg(res.data.message);
         });
       })
