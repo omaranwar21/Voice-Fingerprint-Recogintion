@@ -58,12 +58,12 @@ def features_extractor(file):
     features = []
     audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
     mfcc = mfcc_feature_extractor(audio, sampleRate)
-    contrast = contrast_feature_extractor(audio, sampleRate)
-    tonnetz = tonnetz_feature_extractor(audio, sampleRate)
-    centroid = centroid_feature_extractor(audio, sampleRate)
-    features.append([mfcc, contrast, tonnetz, centroid])
-    features[0] = np.concatenate(
-        (features[0][0], features[0][1], features[0][2], features[0][3]))
+    # contrast = contrast_feature_extractor(audio, sampleRate)
+    # tonnetz = tonnetz_feature_extractor(audio, sampleRate)
+    # centroid = centroid_feature_extractor(audio, sampleRate)
+    features.append(mfcc)
+    # features[0] = np.concatenate(
+    #     (features[0][0], features[0][1], features[0][2], features[0][3]))
     return features
 
 #------------------------------------------------- convert mp3 to wav -------------------------------------------------#
