@@ -52,18 +52,24 @@ def centroid_feature_extractor(audio, sampleRate):
 
     return centroidScaled
 
+def chroma_feature_extractor(audio,sampleRate):
+    stft = np.abs(librosa.stft(audio))
+    chroma = librosa.feature.chroma_stft(S=stft,sr=sampleRate)
+    chromaScaled = np.mean(chroma.T,axis=0)
+    
+    return chromaScaled
 
 def features_extractor(file):
     wavfilePath = convert_to_wav(file)
     features = []
     audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
-    mfcc = mfcc_feature_extractor(audio, sampleRate)
-    # contrast = contrast_feature_extractor(audio, sampleRate)
-    # tonnetz = tonnetz_feature_extractor(audio, sampleRate)
-    # centroid = centroid_feature_extractor(audio, sampleRate)
-    features.append(mfcc)
-    # features[0] = np.concatenate(
-    #     (features[0][0], features[0][1], features[0][2], features[0][3]))
+    mfcc=mfcc_feature_extractor(audio,sampleRate)
+    contrast = contrast_feature_extractor(audio,sampleRate)
+    tonnetz = tonnetz_feature_extractor(audio,sampleRate)
+    chroma = chroma_feature_extractor(audio,sampleRate)
+
+    features.append([mfcc,contrast,tonnetz,chroma])
+    features[0] = np.concatenate((features[0][0],features[0][1],features[0][2],features[0][3]))
     return features
 
 #------------------------------------------------- convert mp3 to wav -------------------------------------------------#
