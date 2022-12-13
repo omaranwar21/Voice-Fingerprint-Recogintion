@@ -9,7 +9,9 @@ const recorder = new MicRecorder({
 
 function RecordingButton() {
   const [recording, setRecording] = useState();
-  const [msg, setMsg] = useState("");
+  const [password, setPassword] = useState("");
+  const [ingroup, setIngroup] = useState("");
+  const [person, setPerson] = useState("");
 
   const onCLickRecordButton = (e) => {
     console.log(recording);
@@ -18,7 +20,9 @@ function RecordingButton() {
     recorder
       .start()
       .then(() => {
-        // something else
+        setPerson('');
+          setPassword('');
+          setIngroup('');
       })
       .catch((e) => {
         console.error(e);
@@ -57,7 +61,10 @@ function RecordingButton() {
         axios.post("/upload", formData).then((res) => {
           // const player = new Audio(res.data.file_url);
           // player.play();
-          setMsg(res.data.message);
+
+          setPerson(res.data.person);
+          setPassword(res.data.password);
+          setIngroup(res.data.ingroup);
         });
       })
       .catch((e) => {
@@ -76,7 +83,9 @@ function RecordingButton() {
           Stop
         </button>
       )}
-      <h3>{msg}</h3>
+      <h3>{ingroup}</h3>
+      <h3>{person}</h3>
+      <h3>{password}</h3>
     </div>
   );
 }

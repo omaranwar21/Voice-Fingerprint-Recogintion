@@ -20,7 +20,9 @@ ALLOWED_EXTENSIONS = {'wav', 'mp3'}   # Extension Allowed
 
 
 #------------------------------------------------- extracting features -------------------------------------------------#
+ingroup_model = pickle.load(open("../processing/ingroup_model.pkl", "rb"))
 model = pickle.load(open("../processing/model.pkl", "rb"))
+password_model = pickle.load(open("../processing/password_model.pkl", "rb"))
 
 
 def mfcc_feature_extractor(audio, sampleRate):
@@ -117,25 +119,42 @@ def upload_file():
         return {"err": "File format is not accepted"}, 400
 
     signalPath = os.path.join(AUDIO_FOLDER, file.filename)
-
     file.save(signalPath)
+
+    person='...'
+    password='...'
+    ingroup='...'
+    
 
     features = features_extractor(file.filename)
 
-    prediction = model.predict(features)
-    print(prediction)
+    ingroup_model_prediction = ingroup_model.predict(features)
+    print(ingroup_model_prediction)
 
-    result = "0000"
-    if prediction == 0:
-        result = 'anwar'
-    elif prediction == 1:
-        result = 'Aya'
-    elif prediction == 2:
-        result = 'Ehab'
-    elif prediction == 3:
-        result = 'Zeyad'
 
-    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "message": result, "result": result}, 200
+    if ingroup_model_prediction == 0:
+        ingroup="In Group"
+    else:
+        ingroup="Unknown"
+
+    model_prediction = model.predict(features)       
+    if model_prediction == 0:
+        person = 'anwar'
+    elif model_prediction == 1:
+        person = 'Aya'
+    elif model_prediction == 2:
+        person = 'Ehab'
+    elif model_prediction == 3:
+        person = 'Zeyad'
+        
+    password_model_prediction = password_model.predict(features)
+    print(password_model_prediction)
+    if password_model_prediction==0:
+        password='Correct Password'
+    else:
+        password='Wrong Password'
+
+    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "person": person, "password": password, "ingroup":ingroup}, 200
 #----------------------------------------------------------------------------------------------------------------------#
 
 
