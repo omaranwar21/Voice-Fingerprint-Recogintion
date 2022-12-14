@@ -1,11 +1,7 @@
-import RecordingButton from "./components/recording_btn";
+import Layout from "./pages/layout/index.jsx";
 
 function App() {
-  return (
-    <div className="App">
-      <RecordingButton />
-    </div>
-  );
+  return <Layout />;
 }
 
 export default App;

@@ -122,39 +122,37 @@ def upload_file():
     file.save(signalPath)
 
     person='...'
-    password='...'
-    ingroup='...'
+    password=''
+    # ingroup='...'
     
 
     features = features_extractor(file.filename)
 
     ingroup_model_prediction = ingroup_model.predict(features)
-    print(ingroup_model_prediction)
-
 
     if ingroup_model_prediction == 0:
-        ingroup="In Group"
-    else:
-        ingroup="Unknown"
+        # ingroup="In Group"
 
-    model_prediction = model.predict(features)       
-    if model_prediction == 0:
-        person = 'anwar'
-    elif model_prediction == 1:
-        person = 'Aya'
-    elif model_prediction == 2:
-        person = 'Ehab'
-    elif model_prediction == 3:
-        person = 'Zeyad'
-        
-    password_model_prediction = password_model.predict(features)
-    print(password_model_prediction)
-    if password_model_prediction==0:
-        password='Correct Password'
-    else:
-        password='Wrong Password'
+        model_prediction = model.predict(features)       
+        if model_prediction == 0:
+            person = 'anwar'
+        elif model_prediction == 1:
+            person = 'Aya'
+        elif model_prediction == 2:
+            person = 'Ehab'
+        elif model_prediction == 3:
+            person = 'Zeyad'
+            
+        password_model_prediction = password_model.predict(features)
+        if password_model_prediction==0:
+            password='Correct Password'
+        else:
+            password='Wrong Password'
 
-    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "person": person, "password": password, "ingroup":ingroup}, 200
+    else:
+        person="Unknown"
+
+    return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "person": person, "password": password}, 200
 #----------------------------------------------------------------------------------------------------------------------#
 
 
