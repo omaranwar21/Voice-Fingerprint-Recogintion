@@ -10,7 +10,6 @@ const recorder = new MicRecorder({
 function RecordingButton() {
   const [recording, setRecording] = useState();
   const [password, setPassword] = useState("");
-  const [ingroup, setIngroup] = useState("");
   const [person, setPerson] = useState("");
 
   const onCLickRecordButton = (e) => {
@@ -22,7 +21,6 @@ function RecordingButton() {
       .then(() => {
         setPerson('');
           setPassword('');
-          setIngroup('');
       })
       .catch((e) => {
         console.error(e);
@@ -64,7 +62,6 @@ function RecordingButton() {
 
           setPerson(res.data.person);
           setPassword(res.data.password);
-          setIngroup(res.data.ingroup);
         });
       })
       .catch((e) => {
@@ -83,7 +80,6 @@ function RecordingButton() {
           Stop
         </button>
       )}
-      <h3>{ingroup}</h3>
       <h3>{person}</h3>
       <h3>{password}</h3>
     </div>
