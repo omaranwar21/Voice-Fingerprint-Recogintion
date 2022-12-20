@@ -1,0 +1,76 @@
+.container {
+  background-color: #151515;
+  height: 100vh;
+  width: 100vw;
+}
+
+.mainRow {
+  height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.recordePanel {
+  /* border-right: 3px solid white; */
+  background-color: #252525;
+  border-radius: 0.7rem;
+  margin: 1rem 0 1rem 1rem;
+  width: 30vw;
+}
+
+.repersenationContainer {
+}
+
+.repersenationSection {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.repersenationPanel {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  color: white;
+  background-color: #252525;
+  border-radius: 0.7rem;
+
+  padding: 1rem;
+  margin: 1rem 0;
+  height: 45vh;
+}
+
+img {
+  width: 30vw;
+  height: 40vh;
+  border-radius: 0.7rem;
+  animation: fadeIn 2s;
+
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out;
+}
+
+img:hover {
+  transition: opacity 0.55s ease-in-out;
+  -moz-transition: opacity 0.55s ease-in-out;
+  -webkit-transition: opacity 0.55s ease-in-out;
+  cursor: pointer;
+  transform: scale(1.05);
+
+  transition: transform 0.5s ease;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+h3 {
+  color: #5c8cd8;
+}
