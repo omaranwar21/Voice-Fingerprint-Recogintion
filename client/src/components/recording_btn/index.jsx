@@ -2,25 +2,39 @@ import MicRecorder from "mic-recorder-to-mp3";
 import axios from "../../globals/api/axios";
 import style from "./style.module.css";
 import { useState } from "react";
+import AudioAnalyser from "react-audio-analyser";
+import { Container, Row, Col } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import icon from "../../globals/assets/mic.png";
+import locked from "../../globals/assets/lock.png";
+import opened from "../../globals/assets/open.png";
 
 const recorder = new MicRecorder({
   bitRate: 128,
 });
 
 function RecordingButton() {
-  const [recording, setRecording] = useState();
+  const [recording, setRecording] = useState(false);
+  const [verified, setVerified] = useState(0);
+
   const [password, setPassword] = useState("");
   const [person, setPerson] = useState("");
+  const [message, setMessage] = useState("Speak");
+  const [status, setStatus] = useState("");
 
+  const persons = ["Anwar", "Aya", "Ehab", "Zeyad"];
   const onCLickRecordButton = (e) => {
     console.log(recording);
     setRecording(true);
+    setVerified(1);
+
     // Start recording. Browser will request permission to use your microphone.
     recorder
       .start()
       .then(() => {
-        setPerson('');
-          setPassword('');
+        setStatus("recording");
+        setPerson("");
+        setPassword("");
       })
       .catch((e) => {
         console.error(e);
@@ -46,6 +60,8 @@ function RecordingButton() {
       .stop()
       .getMp3()
       .then(([buffer, blob]) => {
+        setStatus("inactive");
+
         const file = new File(buffer, `voice${date}.mp3`, {
           type: blob.type,
           lastModified: Date.now(),
@@ -62,6 +78,13 @@ function RecordingButton() {
 
           setPerson(res.data.person);
           setPassword(res.data.password);
+          if (res.data.person !== "0" && res.data.password !== "1") {
+            setVerified(2);
+            setMessage("Hello, " + res.data.person + " !");
+          } else {
+            setVerified(0);
+            setMessage("Access Denied !" + res.data.person);
+          }
         });
       })
       .catch((e) => {
@@ -69,20 +92,51 @@ function RecordingButton() {
         console.log(e);
       });
   };
+
+  const audioProps = {
+    status,
+    timeslice: 1000, // timeslice（https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters）
+    width: "350",
+  };
   return (
-    <div className={style.container}>
-      {!recording ? (
-        <button className={style.record} onClick={onCLickRecordButton}>
-          Record
-        </button>
-      ) : (
-        <button className={style.stop} disabled>
-          Stop
-        </button>
-      )}
-      <h3>{person}</h3>
-      <h3>{password}</h3>
-    </div>
+    <Container fluid>
+      <Col className={style.recordingPanel}>
+        <Row>
+          <button
+            className={!recording ? style.record : style.stop}
+            onClick={!recording ? onCLickRecordButton : () => {}}
+          >
+            <img src={icon} alt="" />
+          </button>
+        </Row>
+
+        <Row>
+          <AudioAnalyser
+            {...audioProps}
+            className={style.analyser}
+          ></AudioAnalyser>
+        </Row>
+
+        <Row className={style.result}>
+          {verified === 1 ? (
+            <Spinner
+              as="span"
+              animation="border"
+              role="status"
+              variant="primary"
+              aria-hidden="true"
+            />
+          ) : (
+            <img
+              src={verified === 0 ? locked : opened}
+              className={style.resultIcon}
+              alt=""
+            />
+          )}
+          <Col>{verified === 1 ? <h5>Loading ..</h5> : <h5>{message}</h5>}</Col>
+        </Row>
+      </Col>
+    </Container>
   );
 }
 
