@@ -1,32 +1,69 @@
-.record{
-    width: 12rem;
-    height: 12rem;
-    border: 0.1rem solid red;
-    border-radius: 15rem;
-    font-size: 2rem;
-    cursor: pointer;
+/* .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.stop {
+  background-color: red;
+  color: white;
+  width: 8rem;
+  height: 8rem;
+  border: 0.1rem solid red;
+  border-radius: 15rem;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.record:hover{
-    border: 0.2rem solid darkslategrey;
-    color: red;
+.record {
+  background-color: #151515;
+  color: white;
+  width: 8rem;
+  height: 8rem;
+  border: 0.1rem solid red;
+  border-radius: 15rem;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.container{
-    margin-top: 10rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.record:hover {
+  border: 0.2rem solid #5c8cd8;
+  color: red;
 }
 
-.stop{
-    background-color: red;
-    color: white;
-    width: 12rem;
-    height: 12rem;
-    border: 0.1rem solid red;
-    border-radius: 15rem;
-    font-size: 2rem;
-    cursor: pointer;
+.result {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #5c8cd8;
 }
 
+.analyser {
+  /* width: 20vw; */
+  padding: 1rem;
+}
+
+.recordingPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 90vh;
+}
+
+.result {
+  background-color: #151515;
+  color: white;
+  width: 350px;
+  height: 15vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border: 1px solid #5c8cd8;
+  border-radius: 0.8rem;
+}
+
+.resultIcon {
+  width: 80px;
+}

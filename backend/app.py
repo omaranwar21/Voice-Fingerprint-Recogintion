@@ -1,4 +1,4 @@
-#####################################-----------     Packages Used     -----------######################################
+##################################### -----------     Packages Used     -----------######################################
 from flask import Flask, request, send_from_directory     # Flask I
 from flask_cors import CORS             # Activate Flask APIs
 import os.path                          # To treat with files path (save Files)
@@ -19,7 +19,7 @@ CORS(app)
 ALLOWED_EXTENSIONS = {'wav', 'mp3'}   # Extension Allowed
 
 
-#------------------------------------------------- extracting features -------------------------------------------------#
+# ------------------------------------------------- extracting features -------------------------------------------------#
 ingroup_model = pickle.load(open("../processing/ingroup_model.pkl", "rb"))
 model = pickle.load(open("../processing/model.pkl", "rb"))
 password_model = pickle.load(open("../processing/password_model.pkl", "rb"))
@@ -54,27 +54,30 @@ def centroid_feature_extractor(audio, sampleRate):
 
     return centroidScaled
 
-def chroma_feature_extractor(audio,sampleRate):
+
+def chroma_feature_extractor(audio, sampleRate):
     stft = np.abs(librosa.stft(audio))
-    chroma = librosa.feature.chroma_stft(S=stft,sr=sampleRate)
-    chromaScaled = np.mean(chroma.T,axis=0)
-    
+    chroma = librosa.feature.chroma_stft(S=stft, sr=sampleRate)
+    chromaScaled = np.mean(chroma.T, axis=0)
+
     return chromaScaled
+
 
 def features_extractor(file):
     wavfilePath = convert_to_wav(file)
     features = []
     audio, sampleRate = librosa.load(wavfilePath, res_type='kaiser_fast')
-    mfcc=mfcc_feature_extractor(audio,sampleRate)
-    contrast = contrast_feature_extractor(audio,sampleRate)
-    tonnetz = tonnetz_feature_extractor(audio,sampleRate)
-    chroma = chroma_feature_extractor(audio,sampleRate)
+    mfcc = mfcc_feature_extractor(audio, sampleRate)
+    contrast = contrast_feature_extractor(audio, sampleRate)
+    tonnetz = tonnetz_feature_extractor(audio, sampleRate)
+    chroma = chroma_feature_extractor(audio, sampleRate)
 
-    features.append([mfcc,contrast,tonnetz,chroma])
-    features[0] = np.concatenate((features[0][0],features[0][1],features[0][2],features[0][3]))
+    features.append([mfcc, contrast, tonnetz, chroma])
+    features[0] = np.concatenate(
+        (features[0][0], features[0][1], features[0][2], features[0][3]))
     return features
 
-#------------------------------------------------- convert mp3 to wav -------------------------------------------------#
+# ------------------------------------------------- convert mp3 to wav -------------------------------------------------#
 
 
 def convert_to_wav(file):
@@ -85,7 +88,7 @@ def convert_to_wav(file):
     return wavfilePath
 
 
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 # function description:
 #       Arguments: File name
 #               check if the file has an allowed extension or not
@@ -93,10 +96,10 @@ def convert_to_wav(file):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 
 
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 # Route handels the file recorded
 #       Methods: the client Posts the recorded file
 #       Functions: upload_file:
@@ -121,10 +124,9 @@ def upload_file():
     signalPath = os.path.join(AUDIO_FOLDER, file.filename)
     file.save(signalPath)
 
-    person='...'
-    password=''
+    person = '...'
+    password = ''
     # ingroup='...'
-    
 
     features = features_extractor(file.filename)
 
@@ -133,7 +135,7 @@ def upload_file():
     if ingroup_model_prediction == 0:
         # ingroup="In Group"
 
-        model_prediction = model.predict(features)       
+        model_prediction = model.predict(features)
         if model_prediction == 0:
             person = 'anwar'
         elif model_prediction == 1:
@@ -142,18 +144,22 @@ def upload_file():
             person = 'Ehab'
         elif model_prediction == 3:
             person = 'Zeyad'
-            
+
         password_model_prediction = password_model.predict(features)
-        if password_model_prediction==0:
-            password='Correct Password'
+        if password_model_prediction == 0:
+            password = '0'
         else:
-            password='Wrong Password'
+            password = '1'
 
     else:
-        person="Unknown"
+        person = "0"
+        password = '1'
+
+    print(person)
+    print(password)
 
     return {"file_url": "http://127.0.0.1:5000/api/file/" + file.filename, "person": person, "password": password}, 200
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 
 
 # get audio file APIs
@@ -163,8 +169,8 @@ def file(file_name):
         return send_from_directory(directory=app.config['AUDIO_FOLDER'], path=file_name), 200
 
 
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
     # debug = true --> if the app has any error they will pop up on the web page
     app.run(debug=True)
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
