@@ -19,10 +19,9 @@ function RecordingButton() {
 
   const [password, setPassword] = useState("");
   const [person, setPerson] = useState("");
-  const [message, setMessage] = useState("Speak");
+  const [message, setMessage] = useState("Locked");
   const [status, setStatus] = useState("");
 
-  const persons = ["Anwar", "Aya", "Ehab", "Zeyad"];
   const onCLickRecordButton = (e) => {
     console.log(recording);
     setRecording(true);
