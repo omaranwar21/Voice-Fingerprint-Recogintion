@@ -5,7 +5,9 @@ import os.path                          # To treat with files path (save Files)
 import pickle
 import librosa
 import numpy as np
+import pandas as pd
 from pydub import AudioSegment
+import matplotlib.pyplot as plt
 
 
 app = Flask(__name__)
@@ -76,6 +78,40 @@ def features_extractor(file):
     features[0] = np.concatenate(
         (features[0][0], features[0][1], features[0][2], features[0][3]))
     return features
+
+# ------------------------------------------------- model plotting -------------------------------------------------#
+plotting_model = pickle.load(open("../processing/plotting_model.pkl", "rb"))
+model_data = pd.read_csv("../processing/model_data.csv")
+x= model_data.iloc[:,0:-1]
+y = model_data.loc[:,'target']
+x = x.values
+xNew = []
+for i in x:
+    xNew.append([i[4],i[46]])
+xNew = np.array(xNew)
+h = .02  # step size in the mesh
+x_min, x_max = xNew[:, 0].min() - 1, xNew[:, 0].max() + 1
+y_min, y_max = xNew[:, 1].min() - 1, xNew[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+z = plotting_model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
+
+def model_plotting(firstFeature,secondFeature,x,y,xx,yy,z):
+    plt.figure(figsize=(10,7))
+    plt.contourf(xx, yy, z, cmap=plt.cm.coolwarm, alpha=0.8,zorder=0)
+
+    plt.scatter(x[:, 0], x[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
+
+    plt.scatter(x=firstFeature, y=secondFeature, color = '#000000',marker='^',zorder=10)  # plotting single point
+
+    plt.xlabel('firstFeature')
+    plt.ylabel('secondFeature')
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+    plt.xticks(())
+    plt.yticks(())
+    plt.title("SVM Model with linear kernel")
+    plt.show()
 
 # ------------------------------------------------- convert mp3 to wav -------------------------------------------------#
 
