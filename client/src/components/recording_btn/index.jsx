@@ -86,15 +86,23 @@ function RecordingButton() {
           // const player = new Audio(res.data.file_url);
           // player.play();
 
-          setBottomImg1(`http://localhost:5000/api/file/voice${date}.mp3.png`);
-          setBottomImg2(`http://localhost:5000/api/file/${res.person}.mp3.png`);
           setPerson(res.data.person);
           setPassword(res.data.password);
           if (res.data.person !== "0" && res.data.password !== "1") {
             setVerified(2);
+            setBottomImg1(
+              `http://localhost:5000/api/file/voice${date}.mp3.png`
+            );
+            setBottomImg2(
+              `http://localhost:5000/api/file/${res.person}.mp3.png`
+            );
             setMessage("Hello, " + res.data.person + " !");
           } else {
             setVerified(0);
+            setBottomImg1(
+              `http://localhost:5000/api/file/voice${date}.mp3.png`
+            );
+            setBottomImg2(`http://localhost:5000/api/file/other.png`);
             setMessage("Access Denied !" + res.data.person);
           }
         });
