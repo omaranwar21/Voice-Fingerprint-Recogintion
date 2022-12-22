@@ -96,13 +96,13 @@ xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                      np.arange(y_min, y_max, h))
 z = plotting_model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
-def model_plotting(firstFeature,secondFeature,x,y,xx,yy,z):
+def model_plotting(firstFeature ,secondFeature, x, y, xx, yy, z, name):
     plt.figure(figsize=(10,7))
-    plt.contourf(xx, yy, z, cmap=plt.cm.coolwarm, alpha=0.8,zorder=0)
+    plt.contourf(xx, yy, z, origin='lower', cmap= plt.cm.coolwarm, alpha=0.4,zorder=0)
 
-    plt.scatter(x[:, 0], x[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
+    plt.scatter(X[:, 0], X[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
 
-    plt.scatter(x=firstFeature, y=secondFeature, color = '#000000',marker='^',zorder=10)  # plotting single point
+    plt.scatter(x=firstFeature, y=secondFeature, color = '#ffffff',marker='^',zorder=10)  # plotting single point
 
     plt.xlabel('firstFeature')
     plt.ylabel('secondFeature')
@@ -111,7 +111,7 @@ def model_plotting(firstFeature,secondFeature,x,y,xx,yy,z):
     plt.xticks(())
     plt.yticks(())
     plt.title("SVM Model with linear kernel")
-    plt.show()
+    plt.savefig('./files' + name+'.png')
 
 # ------------------------------------------------- convert mp3 to wav -------------------------------------------------#
 
