@@ -1,7 +1,9 @@
 import MicRecorder from "mic-recorder-to-mp3";
 import axios from "../../globals/api/axios";
 import style from "./style.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppContext } from "../../context/index";
+
 import AudioAnalyser from "react-audio-analyser";
 import { Container, Row, Col } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
@@ -14,13 +16,21 @@ const recorder = new MicRecorder({
 });
 
 function RecordingButton() {
-  const [recording, setRecording] = useState(false);
-  const [verified, setVerified] = useState(0);
-
-  const [password, setPassword] = useState("");
-  const [person, setPerson] = useState("");
-  const [message, setMessage] = useState("Locked");
-  const [status, setStatus] = useState("");
+  // fetch files from the context
+  const {
+    recording,
+    setRecording,
+    verified,
+    setVerified,
+    password,
+    setPassword,
+    person,
+    setPerson,
+    message,
+    setMessage,
+    status,
+    setStatus,
+  } = useContext(AppContext);
 
   const onCLickRecordButton = (e) => {
     console.log(recording);
