@@ -100,7 +100,7 @@ def model_plotting(firstFeature ,secondFeature, x, y, xx, yy, z, name):
     plt.figure(figsize=(10,7))
     plt.contourf(xx, yy, z, origin='lower', cmap= plt.cm.coolwarm, alpha=0.4,zorder=0)
 
-    plt.scatter(X[:, 0], X[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
+    plt.scatter(x[:, 0], x[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
 
     plt.scatter(x=firstFeature, y=secondFeature, color = '#ffffff',marker='^',zorder=10)  # plotting single point
 
