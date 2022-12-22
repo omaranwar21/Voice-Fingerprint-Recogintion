@@ -99,8 +99,10 @@ z = plotting_model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
 
 def model_plotting(firstFeature, secondFeature, x, y, xx, yy, z, name):
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(10, 7),)
     plt.style.context(['dark_background'])
+    plt.rcParams.update({'text.color' : "white",
+                     'axes.labelcolor' : "white"})
     plt.contourf(xx, yy, z, origin='lower',
                  cmap=plt.cm.coolwarm, alpha=0.4, zorder=0)
 
@@ -108,7 +110,7 @@ def model_plotting(firstFeature, secondFeature, x, y, xx, yy, z, name):
                 cmap=plt.cm.coolwarm, zorder=1)
 
     plt.scatter(x=firstFeature, y=secondFeature, color='#ffffff',
-                marker='^', zorder=10, s=80)  # plotting single point
+                marker='^', zorder=10, s=150)  # plotting single point
 
     plt.xlabel('firstFeature')
     plt.ylabel('secondFeature')
@@ -117,7 +119,8 @@ def model_plotting(firstFeature, secondFeature, x, y, xx, yy, z, name):
     plt.xticks(())
     plt.yticks(())
     plt.title("SVM Model with linear kernel")
-    plt.savefig('./files/' + name+'.png', facecolor="#00000000")
+    plt.savefig('./files/' + name+'.png', facecolor="black",bbox_inches = 'tight',
+    pad_inches = 0.1)
 
 # ------------------------------------------------- convert mp3 to wav -------------------------------------------------#
 

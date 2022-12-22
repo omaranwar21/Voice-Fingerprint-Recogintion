@@ -9,13 +9,13 @@ export const FileContextProvider = ({ children }) => {
   const [message, setMessage] = useState("Locked");
   const [status, setStatus] = useState("");
   const [topImg, setTopImg] = useState(
-    "https://lightningchart.com/lightningchart-js-interactive-examples/images/spectrogram.png"
+    "http://localhost:5000/api/file/model.png"
   );
   const [bottomImg1, setBottomImg1] = useState(
-    "https://lightningchart.com/lightningchart-js-interactive-examples/images/spectrogram.png"
+    "http://localhost:5000/api/file/linear.png"
   );
   const [bottomImg2, setBottomImg2] = useState(
-    "https://lightningchart.com/lightningchart-js-interactive-examples/images/spectrogram.png"
+    "http://localhost:5000/api/file/others.png"
   );
   const [fileName, setFileName] = useState("");
 

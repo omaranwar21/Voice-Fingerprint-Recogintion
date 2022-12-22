@@ -5,11 +5,13 @@ import { useContext } from "react";
 import { AppContext } from "../../context/index";
 
 import AudioAnalyser from "react-audio-analyser";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Container, Row, Col } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import icon from "../../globals/assets/mic.png";
 import locked from "../../globals/assets/lock.png";
 import opened from "../../globals/assets/open.png";
+
 
 const recorder = new MicRecorder({
   bitRate: 128,
@@ -37,12 +39,13 @@ function RecordingButton() {
     console.log(recording);
     setRecording(true);
     setVerified(1);
-
+    SpeechRecognition.startListening();
     // Start recording. Browser will request permission to use your microphone.
     recorder
       .start()
       .then(() => {
-        setStatus("recording");
+        
+                setStatus("recording");
         setPerson("");
         setPassword("");
       })
@@ -54,6 +57,16 @@ function RecordingButton() {
       onCLickStopRecordButton();
     }, 3000);
   };
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
   const onCLickStopRecordButton = (e) => {
     console.log(recording);
     setRecording(false);
@@ -64,12 +77,13 @@ function RecordingButton() {
       today.getSeconds() +
       "0" +
       today.getMilliseconds();
-
+      SpeechRecognition.stopListening();
     // Once you are record, stop and get the mp3.
     recorder
       .stop()
       .getMp3()
       .then(([buffer, blob]) => {
+       
         setStatus("inactive");
         setFileName(`voice${date}`);
         const file = new File(buffer, `voice${date}.mp3`, {
@@ -88,13 +102,18 @@ function RecordingButton() {
 
           setPerson(res.data.person);
           setPassword(res.data.password);
-          if (res.data.person !== "0" && res.data.password !== "1") {
+          console.log(transcript)
+          if(transcript.toLowerCase().trim()==='open the door'){
+          console.log('oooo')}else{
+            console.log('nnn')
+          }
+          if (res.data.person !== "0" && transcript.toLowerCase().trim()==='open the door') {
             setVerified(2);
             setBottomImg1(
               `http://localhost:5000/api/file/voice${date}.mp3.png`
             );
             setBottomImg2(
-              `http://localhost:5000/api/file/${res.person}.mp3.png`
+              `http://localhost:5000/api/file/${res.data.person}.png`
             );
             setMessage("Hello, " + res.data.person + " !");
           } else {
@@ -103,7 +122,7 @@ function RecordingButton() {
               `http://localhost:5000/api/file/voice${date}.mp3.png`
             );
             setBottomImg2(`http://localhost:5000/api/file/others.png`);
-            setMessage("Access Denied !" + res.data.person);
+            setMessage("Access Denied !");
           }
         });
       })
@@ -116,11 +135,13 @@ function RecordingButton() {
   const audioProps = {
     status,
     timeslice: 1000, // timeslice（https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters）
-    width: "350",
+    width: "500",
+  
   };
   return (
     <Container fluid>
       <Col className={style.recordingPanel}>
+    
         <Row>
           <button
             className={!recording ? style.record : style.stop}
@@ -129,7 +150,7 @@ function RecordingButton() {
             <img src={icon} alt="" />
           </button>
         </Row>
-
+       
         <Row>
           <AudioAnalyser
             {...audioProps}

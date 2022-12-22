@@ -9,7 +9,7 @@ const TopRepresenation = () => {
   // const { fileName } = useContext(AppContext);
   return (
     <Row className={style.repersenationPanel}>
-      <Col className={style.repersenationSection}>
+      <Col className={style.repersenationTextSection}>
         <h3>Voice Recognition</h3>
 
         <li>

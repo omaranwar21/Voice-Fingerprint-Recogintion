@@ -7,8 +7,8 @@
 .stop {
   background-color: red;
   color: white;
-  width: 8rem;
-  height: 8rem;
+  width: 15rem;
+  height: 15rem;
   border: 0.1rem solid red;
   border-radius: 15rem;
   font-size: 1.5rem;
@@ -18,8 +18,8 @@
 .record {
   background-color: #151515;
   color: white;
-  width: 8rem;
-  height: 8rem;
+  width: 15rem;
+  height: 15rem;
   border: 0.1rem solid red;
   border-radius: 15rem;
   font-size: 1.5rem;
@@ -55,7 +55,7 @@
 .result {
   background-color: #151515;
   color: white;
-  width: 350px;
+  width: 500px;
   height: 15vh;
   display: flex;
   justify-content: space-between;
