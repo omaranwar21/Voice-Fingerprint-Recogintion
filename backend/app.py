@@ -166,6 +166,9 @@ def upload_file():
 
     features = features_extractor(file.filename)
 
+    first_feature = features[4]
+    second_feature = features[46]
+
     ingroup_model_prediction = ingroup_model.predict(features)
 
     if ingroup_model_prediction == 0:
@@ -190,7 +193,8 @@ def upload_file():
     else:
         person = "0"
         password = '1'
-
+    model_plotting(first_feature, second_feature,
+                   xNew, y, xx, yy, z, file.filename)
     print(person)
     print(password)
 
