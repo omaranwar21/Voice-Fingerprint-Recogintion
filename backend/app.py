@@ -79,15 +79,16 @@ def features_extractor(file):
         (features[0][0], features[0][1], features[0][2], features[0][3]))
     return features
 
+
 # ------------------------------------------------- model plotting -------------------------------------------------#
 plotting_model = pickle.load(open("../processing/plotting_model.pkl", "rb"))
 model_data = pd.read_csv("../processing/model_data.csv")
-x= model_data.iloc[:,0:-1]
-y = model_data.loc[:,'target']
+x = model_data.iloc[:, 0:-1]
+y = model_data.loc[:, 'target']
 x = x.values
 xNew = []
 for i in x:
-    xNew.append([i[4],i[46]])
+    xNew.append([i[4], i[46]])
 xNew = np.array(xNew)
 h = .02  # step size in the mesh
 x_min, x_max = xNew[:, 0].min() - 1, xNew[:, 0].max() + 1
@@ -96,13 +97,18 @@ xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                      np.arange(y_min, y_max, h))
 z = plotting_model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
-def model_plotting(firstFeature ,secondFeature, x, y, xx, yy, z, name):
-    plt.figure(figsize=(10,7))
-    plt.contourf(xx, yy, z, origin='lower', cmap= plt.cm.coolwarm, alpha=0.4,zorder=0)
 
-    plt.scatter(x[:, 0], x[:, 1], c=y,marker='x',cmap=plt.cm.coolwarm,zorder=1)
+def model_plotting(firstFeature, secondFeature, x, y, xx, yy, z, name):
+    plt.figure(figsize=(10, 7))
+    plt.style.context(['dark_background'])
+    plt.contourf(xx, yy, z, origin='lower',
+                 cmap=plt.cm.coolwarm, alpha=0.4, zorder=0)
 
-    plt.scatter(x=firstFeature, y=secondFeature, color = '#ffffff',marker='^',zorder=10)  # plotting single point
+    plt.scatter(x[:, 0], x[:, 1], c=y, marker='x',
+                cmap=plt.cm.coolwarm, zorder=1)
+
+    plt.scatter(x=firstFeature, y=secondFeature, color='#ffffff',
+                marker='^', zorder=10)  # plotting single point
 
     plt.xlabel('firstFeature')
     plt.ylabel('secondFeature')
@@ -111,7 +117,7 @@ def model_plotting(firstFeature ,secondFeature, x, y, xx, yy, z, name):
     plt.xticks(())
     plt.yticks(())
     plt.title("SVM Model with linear kernel")
-    plt.savefig('./files' + name+'.png')
+    plt.savefig('./files/' + name+'.png', facecolor="black")
 
 # ------------------------------------------------- convert mp3 to wav -------------------------------------------------#
 
@@ -166,8 +172,8 @@ def upload_file():
 
     features = features_extractor(file.filename)
 
-    first_feature = features[4]
-    second_feature = features[46]
+    first_feature = features[0][4]
+    second_feature = features[0][46]
 
     ingroup_model_prediction = ingroup_model.predict(features)
 
@@ -176,7 +182,7 @@ def upload_file():
 
         model_prediction = model.predict(features)
         if model_prediction == 0:
-            person = 'anwar'
+            person = 'Anwar'
         elif model_prediction == 1:
             person = 'Aya'
         elif model_prediction == 2:

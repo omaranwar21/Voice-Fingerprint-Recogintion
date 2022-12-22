@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
+// import React, { useContext } from "react";
 
 import { Row, Col } from "react-bootstrap";
 import style from "./style.module.css";
-import { AppContext } from "../../context/index";
+// import { AppContext } from "../../context/index";
 
 const TopRepresenation = () => {
   // fetch files from the context
-  const { processing } = useContext(AppContext);
+  // const { fileName } = useContext(AppContext);
   return (
     <Row className={style.repersenationPanel}>
       <Col className={style.repersenationSection}>
-        <h3>FF</h3>
+        <h3>Headline</h3>
         <li>
           First Point: Lorem Ipsum is simply dummy text of the printing and
           typesetting industry.
@@ -31,7 +31,7 @@ const TopRepresenation = () => {
       <Col className={style.repersenationSection}>
         <img
           className={style.customImage}
-          src="https://lightningchart.com/lightningchart-js-interactive-examples/images/spectrogram.png"
+          src="http://localhost:5000/api/file/Anwar.png"
           alt=""
         />
       </Col>

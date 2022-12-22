@@ -1,13 +1,12 @@
 .repersenationSection {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
 }
 
 .repersenationPanel {
   display: flex;
   align-items: center;
-  align-content: center;
+  align-content: space-around;
   color: white;
   background-color: #252525;
   border-radius: 0.7rem;
@@ -18,7 +17,7 @@
 }
 
 .customImage {
-  width: 30vw;
+  width: 29vw;
   height: 40vh;
   border-radius: 0.7rem;
   animation: fadeIn 2s;

@@ -1,7 +1,7 @@
 import MicRecorder from "mic-recorder-to-mp3";
 import axios from "../../globals/api/axios";
 import style from "./style.module.css";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../context/index";
 
 import AudioAnalyser from "react-audio-analyser";
@@ -22,14 +22,15 @@ function RecordingButton() {
     setRecording,
     verified,
     setVerified,
-    password,
     setPassword,
-    person,
     setPerson,
     message,
     setMessage,
     status,
     setStatus,
+    setFileName,
+    setBottomImg1,
+    setBottomImg2,
   } = useContext(AppContext);
 
   const onCLickRecordButton = (e) => {
@@ -70,7 +71,7 @@ function RecordingButton() {
       .getMp3()
       .then(([buffer, blob]) => {
         setStatus("inactive");
-
+        setFileName(`voice${date}`);
         const file = new File(buffer, `voice${date}.mp3`, {
           type: blob.type,
           lastModified: Date.now(),
@@ -85,6 +86,8 @@ function RecordingButton() {
           // const player = new Audio(res.data.file_url);
           // player.play();
 
+          setBottomImg1(`http://localhost:5000/api/file/voice${date}.mp3.png`);
+          setBottomImg2(`http://localhost:5000/api/file/${res.person}.mp3.png`);
           setPerson(res.data.person);
           setPassword(res.data.password);
           if (res.data.person !== "0" && res.data.password !== "1") {
