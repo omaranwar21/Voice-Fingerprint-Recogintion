@@ -27,7 +27,7 @@ const TopRepresenation = () => {
       <Col className={style.repersenationSection}>
         <img
           className={style.customImage}
-          src="http://localhost:5000/api/file/Anwar.png"
+          src="http://localhost:5000/api/file/model.png"
           alt=""
         />
       </Col>

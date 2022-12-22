@@ -102,7 +102,7 @@ function RecordingButton() {
             setBottomImg1(
               `http://localhost:5000/api/file/voice${date}.mp3.png`
             );
-            setBottomImg2(`http://localhost:5000/api/file/other.png`);
+            setBottomImg2(`http://localhost:5000/api/file/others.png`);
             setMessage("Access Denied !" + res.data.person);
           }
         });
