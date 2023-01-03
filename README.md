@@ -62,14 +62,14 @@ Our voice recognition application applys MFCC feature extractor to extract featu
  
    ## Preview
    
-- #### Home page
+-  **Home page**
 
 
 ![React App and 2 more pages - Personal - Microsoft​ Edge 1_3_2023 3_49_48 PM](https://user-images.githubusercontent.com/93640020/210370643-b837c11e-50d1-4cf1-ae33-ee23593dbda9.png)
 
 - #### About the graphs
 
-- the lower left graph plots the recorded audio point to see whether it's closer to inGroup or Out of the group data
+- the lower left graph plots the recorded audio point to see whether it's closer to inGroup or Out of the group data.
 - the lower right one is a graph of a dominant feature in the audio files, if the speaker is a member of the group, it lights his curve. 
 - the upper right graph plots 8 dominant features in the audio records of the group members to compare between them.
 
