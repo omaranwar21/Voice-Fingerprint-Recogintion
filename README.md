@@ -90,7 +90,8 @@ Our voice recognition application applys MFCC feature extractor to extract featu
 
 - **Anwar** 
 
-![Screenshot (381) (1)](https://user-images.githubusercontent.com/93640020/210382666-64b2c747-a461-4d42-b8b7-4efe098f618e.png)
+![Screenshot (382)](https://user-images.githubusercontent.com/93640020/210384649-44e71561-c345-40f8-9af0-1834949a4ae8.png)
+
 
 - **Aya** 
 
