@@ -27,7 +27,7 @@ $ npm start
 ## Description
 
 Our voice recognition application applys MFCC feature extractor to extract features from the audio file, then comapres it with the recorded data feature to recognize the speaker.
-- we used SVM classifier, in this model, the data is mapped in a hyperplan in multidimensional feature space so the points can be categorized, even if its not linearly separable.
+- we have used SVM classifier, in this model, the data is mapped in a hyperplan in multidimensional feature space so the points can be categorized, even if its not linearly separable.
 - Note that: it could have better preformance & accuracy if we used deep learning neural networks, but we was asked to not use deep learning in our project.
 
 
